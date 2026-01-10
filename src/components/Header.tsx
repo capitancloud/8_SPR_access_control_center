@@ -9,7 +9,7 @@ import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import RoleBadge from './RoleBadge';
-import { Shield, Home, Users, Settings, BookOpen, LogOut } from 'lucide-react';
+import { Shield, Home, Users, Settings, BookOpen, LogOut, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 
@@ -29,6 +29,7 @@ const Header: React.FC = () => {
   const navLinks = [
     { to: '/', label: 'Home', icon: Home, requiredRole: null },
     { to: '/dashboard', label: 'Dashboard', icon: BookOpen, requiredRole: 'any' as const },
+    { to: '/loading', label: 'Skeleton', icon: Settings, requiredRole: 'any' as const },
     { to: '/admin', label: 'Admin Panel', icon: Settings, requiredRole: 'admin' as const },
     { to: '/users', label: 'Gestione Utenti', icon: Users, requiredRole: 'admin' as const },
   ];

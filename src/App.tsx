@@ -30,6 +30,7 @@ import Index from "./pages/Index";
 import Dashboard from "./pages/Dashboard";
 import AdminPanel from "./pages/AdminPanel";
 import UsersManagement from "./pages/UsersManagement";
+import LoadingDemo from "./pages/LoadingDemo";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -105,6 +106,19 @@ const App = () => (
               element={
                 <ProtectedRoute adminOnly>
                   <UsersManagement />
+                </ProtectedRoute>
+              }
+            />
+            
+            {/* 
+              PAGINA DEMO SKELETON
+              Accessibile a tutti gli utenti autenticati.
+            */}
+            <Route
+              path="/loading"
+              element={
+                <ProtectedRoute>
+                  <LoadingDemo />
                 </ProtectedRoute>
               }
             />
