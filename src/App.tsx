@@ -30,7 +30,7 @@ import Index from "./pages/Index";
 import Dashboard from "./pages/Dashboard";
 import AdminPanel from "./pages/AdminPanel";
 import UsersManagement from "./pages/UsersManagement";
-import LoadingDemo from "./pages/LoadingDemo";
+
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -110,18 +110,6 @@ const App = () => (
               }
             />
             
-            {/* 
-              PAGINA DEMO SKELETON
-              Accessibile a tutti gli utenti autenticati.
-            */}
-            <Route
-              path="/loading"
-              element={
-                <ProtectedRoute>
-                  <LoadingDemo />
-                </ProtectedRoute>
-              }
-            />
             
             {/* Catch-all per 404 */}
             <Route path="*" element={<NotFound />} />
