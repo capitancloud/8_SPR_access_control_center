@@ -1,5 +1,5 @@
 /**
- * AUTH CONTEXT - Contesto di Autenticazione Simulato
+ * AUTH CONTEXT - Contesto di Autenticazione con Codice di Accesso
  * 
  * ⚠️ IMPORTANTE: Questo è un contesto EDUCATIVO per dimostrare i concetti.
  * In produzione, l'autenticazione DEVE essere gestita lato server!
@@ -18,6 +18,7 @@
  */
 
 import React, { createContext, useContext, useState, useCallback, ReactNode } from 'react';
+import { verifyAccessCode } from '@/lib/hashUtils';
 
 // Definizione dei tipi di ruolo disponibili
 export type UserRole = 'admin' | 'user' | null;
@@ -34,10 +35,15 @@ export interface User {
 interface AuthContextType {
   user: User | null;
   isAuthenticated: boolean;
+  isCodeVerified: boolean;
   isAdmin: boolean;
   isUser: boolean;
+  isLoading: boolean;
+  error: string | null;
+  loginWithCode: (code: string) => Promise<boolean>;
   login: (role: UserRole) => void;
   logout: () => void;
+  logoutCompletely: () => void;
   switchRole: (role: UserRole) => void;
 }
 
@@ -76,9 +82,50 @@ interface AuthProviderProps {
  */
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
+  const [isCodeVerified, setIsCodeVerified] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   /**
-   * LOGIN SIMULATO
+   * LOGIN CON CODICE DI ACCESSO
+   * 
+   * Verifica il codice inserito confrontando l'hash SHA-256.
+   * 
+   * ⚠️ ATTENZIONE: In produzione, questa verifica dovrebbe:
+   * 1. Avvenire sul server
+   * 2. Usare algoritmi più robusti (bcrypt, Argon2)
+   * 3. Includere rate limiting e protezione brute force
+   */
+  const loginWithCode = useCallback(async (code: string): Promise<boolean> => {
+    setIsLoading(true);
+    setError(null);
+    
+    try {
+      // Simula un ritardo di rete
+      await new Promise(resolve => setTimeout(resolve, 500));
+      
+      const isValid = await verifyAccessCode(code);
+      
+      if (isValid) {
+        setIsCodeVerified(true);
+        console.log('🔐 [SIMULAZIONE] Codice di accesso verificato tramite hash');
+        console.log('⚠️ In produzione, questa verifica avverrebbe sul server!');
+        return true;
+      } else {
+        setError('Codice di accesso non valido');
+        console.log('❌ [SIMULAZIONE] Codice errato');
+        return false;
+      }
+    } catch (err) {
+      setError('Errore durante la verifica del codice');
+      return false;
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
+
+  /**
+   * LOGIN SIMULATO (selezione ruolo)
    * 
    * ⚠️ ATTENZIONE: In produzione, il login dovrebbe:
    * 1. Inviare le credenziali al server in modo sicuro (HTTPS)
@@ -96,12 +143,22 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   }, []);
 
   /**
-   * LOGOUT
+   * LOGOUT (solo dal ruolo, mantiene accesso all'app)
    * In produzione: invalidare il token sul server
    */
   const logout = useCallback(() => {
     setUser(null);
-    console.log('🔓 [SIMULAZIONE] Logout effettuato');
+    console.log('🔓 [SIMULAZIONE] Logout dal ruolo effettuato');
+  }, []);
+
+  /**
+   * LOGOUT COMPLETO (torna alla schermata di accesso)
+   */
+  const logoutCompletely = useCallback(() => {
+    setUser(null);
+    setIsCodeVerified(false);
+    setError(null);
+    console.log('🔓 [SIMULAZIONE] Logout completo - Ritorno alla schermata di accesso');
   }, []);
 
   /**
@@ -124,10 +181,15 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const value: AuthContextType = {
     user,
     isAuthenticated,
+    isCodeVerified,
     isAdmin,
     isUser,
+    isLoading,
+    error,
+    loginWithCode,
     login,
     logout,
+    logoutCompletely,
     switchRole,
   };
 

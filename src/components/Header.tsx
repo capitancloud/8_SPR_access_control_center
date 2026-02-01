@@ -3,18 +3,19 @@
  * 
  * Questo componente mostra come l'interfaccia cambia in base al ruolo.
  * I link di navigazione vengono mostrati/nascosti in base ai permessi.
+ * Include un pulsante di logout completo per tornare alla schermata di accesso.
  */
 
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import RoleBadge from './RoleBadge';
-import { Shield, Home, Users, Settings, BookOpen, LogOut, Loader2 } from 'lucide-react';
+import { Shield, Home, Users, Settings, BookOpen, LogOut } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 
 const Header: React.FC = () => {
-  const { user, isAuthenticated, isAdmin, logout } = useAuth();
+  const { user, isAuthenticated, isAdmin, logout, logoutCompletely } = useAuth();
   const location = useLocation();
 
   /**
@@ -82,7 +83,7 @@ const Header: React.FC = () => {
           </nav>
 
           {/* User Info & Logout */}
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2">
             {isAuthenticated && user && (
               <>
                 <RoleBadge role={user.role} size="sm" />
@@ -90,13 +91,26 @@ const Header: React.FC = () => {
                   variant="ghost"
                   size="sm"
                   onClick={logout}
-                  className="text-muted-foreground hover:text-destructive"
+                  className="text-muted-foreground hover:text-foreground"
+                  title="Esci dal ruolo"
                 >
                   <LogOut className="w-4 h-4" />
-                  <span className="hidden sm:block ml-2">Esci</span>
+                  <span className="hidden sm:block ml-2">Cambia ruolo</span>
                 </Button>
               </>
             )}
+            
+            {/* Pulsante logout completo - sempre visibile */}
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={logoutCompletely}
+              className="text-muted-foreground hover:text-destructive hover:bg-destructive/10"
+              title="Torna alla schermata di accesso"
+            >
+              <LogOut className="w-4 h-4" />
+              <span className="hidden sm:block ml-2">Esci</span>
+            </Button>
           </div>
         </div>
       </div>
