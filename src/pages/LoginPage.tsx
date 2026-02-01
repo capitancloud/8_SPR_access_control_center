@@ -15,7 +15,7 @@ import { Shield, Lock, Eye, EyeOff, AlertCircle, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import EducationalNote from '@/components/EducationalNote';
+
 
 const LoginPage: React.FC = () => {
   const { loginWithCode, isLoading, error } = useAuth();
@@ -115,16 +115,6 @@ const LoginPage: React.FC = () => {
           </form>
         </div>
 
-        {/* Nota educativa */}
-        <div className="mt-6 animate-fade-in opacity-0 stagger-3" style={{ animationFillMode: 'forwards' }}>
-          <EducationalNote type="info" title="Come funziona?">
-            <p>
-              Il codice inserito viene trasformato in un <strong>hash SHA-256</strong> e 
-              confrontato con l'hash memorizzato. Il codice originale non viene mai 
-              salvato in chiaro.
-            </p>
-          </EducationalNote>
-        </div>
       </div>
     </div>
   );
