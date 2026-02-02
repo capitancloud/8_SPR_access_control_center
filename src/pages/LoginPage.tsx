@@ -11,10 +11,11 @@
 
 import React, { useState } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
-import { Shield, Lock, Eye, EyeOff, AlertCircle, Loader2 } from 'lucide-react';
+import { Lock, Eye, EyeOff, AlertCircle, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import superProgrammatoreLogo from '@/assets/super-programmatore-logo.png';
 
 
 const LoginPage: React.FC = () => {
@@ -39,14 +40,15 @@ const LoginPage: React.FC = () => {
       <div className="absolute bottom-10 right-10 w-96 h-96 bg-accent/10 rounded-full blur-3xl animate-pulse-glow" />
 
       <div className="w-full max-w-md relative z-10">
-        {/* Logo e titolo */}
+        {/* Logo */}
         <div className="text-center mb-8 animate-fade-in">
-          <div className="inline-flex items-center justify-center p-4 rounded-2xl bg-primary/20 mb-4 animate-float">
-            <Shield className="w-12 h-12 text-primary" />
+          <div className="flex justify-center mb-4 animate-float">
+            <img 
+              src={superProgrammatoreLogo} 
+              alt="Super Programmatore Logo" 
+              className="w-64 h-auto drop-shadow-2xl"
+            />
           </div>
-          <h1 className="text-3xl font-bold mb-2">
-            <span className="gradient-text">Access Control</span>
-          </h1>
           <p className="text-muted-foreground">
             Inserisci il codice di accesso per continuare
           </p>
